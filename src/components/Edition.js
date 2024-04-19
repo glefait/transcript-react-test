@@ -7,15 +7,37 @@ import { GenerateDomFromData, ReverseDataFromDom } from '@/components/editionLin
 export function TranscriptionLine({line}){
     const [stateLine, setStateLine] = useState(line);
     const onFocus = () => { console.log("TranscriptionLine:onFocus"); }
-    const onBlur = () => {
-        e.stopPropagation(); // does not trigger on TranscriptionSpeech
-        const reversedLine = ReverseDataFromDom(e.currentTarget);
+
+    const reverse = function(node) {
+        const reversedLine = ReverseDataFromDom(node);
         if(JSON.stringify(reversedLine) != JSON.stringify(stateLine)){
             console.log("updated TranscriptionLine");
             setStateLine(reversedLine);
         }
     }
+    const onBlur = (e) => {
+        e.stopPropagation();
+        reverse(e.currentTarget);
+    }
 
+    const onMoveLineAbove = (e) => {
+        e.stopPropagation();
+        console.log("moveLineAbove:");
+    }
+    const onMoveFirstWordAbove = (e) => {
+        e.stopPropagation();
+        // 1. rebuild the structure first
+        reverse(e.target.parentNode);
+        // 2. split it between first word that should be moved above and the remaining words that should stay here
+        let firstWordOfCurrentLine = stateLine.parts.slice(0,1);
+        let currentLineWithoutFirstWord = stateLine.parts.slice(1);
+        console.log("first word:", firstWordOfCurrentLine);
+        console.log("remaining line:", currentLineWithoutFirstWord);
+    }
+    const onGetLineJSON = (e) => {
+        e.stopPropagation();
+        console.log(JSON.stringify(stateLine));
+    }
     const parts = GenerateDomFromData(stateLine);
     return (
         <p className="transcriptionLine"
@@ -24,14 +46,15 @@ export function TranscriptionLine({line}){
            contentEditable suppressContentEditableWarning
            spellCheck="false" // why not
            role="textbox" tabIndex={0}>
-            <span className="moveLine uxOnly">^</span>
-            <span className="moveFirstWord uxOnly">..</span>
+            <span onClick={onMoveLineAbove} className="moveLine uxOnly">^</span>
+            <span onClick={onGetLineJSON} className="showJson uxOnly">json</span>
+            <span onClick={onMoveFirstWordAbove} className="moveFirstWord uxOnly">..</span>
             {parts}
         </p>
     );
 }
 
-export function TranscriptionSpeech({speech_lines}){
+export function TranscriptionSpeech({speech_lines}) {
     const onBlur = () => {
         console.log("TranscriptionSpeech:onBlur");
     }

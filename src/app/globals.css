@@ -97,3 +97,7 @@ body {
 .moveFirstWord:hover ~ .firstWord {
   background-color: #998512;
 }
+.showJson {
+  margin: 8px;
+  margin-right:0;
+}
