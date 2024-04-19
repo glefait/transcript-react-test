@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# React or not React
 
-## Getting Started
+# Contexte
+UX dans le cadre d'un projet de gestion actionnable de transcription (speech-to-text), la transcription n'étant qu'une étape parmi d'autres (reconnaissance du speaker, modèle spécifique, chapitrage, génération de document final, ...)
+Exemple : [PoC CTM](https://twitter.com/guillem_lefait/status/1639271825149419522)
 
-First, run the development server:
+```
+BTW, c'est un projet pour lequel je recherche potentiellement des associés.
+Une option possible est que le projet soit tout ou en partie open-source.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Intéressé par le projet ? Contactez-moi : guillem@datamq.com
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+La solution legacy (solution non présentée ici) est en JS natif : 
+- structure de type arbre + liste chainée pour pouvoir insérer/déplacer facilement des "feuilles" (ou des branches) dans des branches précédentes/suivantes.
+- conserve le maximum de relation entre les subwords et leurs timestamps (relatif à l'audio)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+La structure se décompose en plusieurs niveaux :
+``` 
+- BLOCKS:
+   - SPEAKER
+   - LINES:
+     - WORDS:
+       - SUBWORDS: <text + timestamp + proba>
+     - AJOUT: <text>
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Volume : plusieurs centaines/milliers de blocks
 
-## Learn More
+## Objectifs
 
-To learn more about Next.js, take a look at the following resources:
+### Objectif métier
+Pouvoir éditer/corriger une transcription générée automatiquement le plus rapidement possible, idéalement avec un 
+facteur x1+ par rapport à la durée du media à transcrire.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+La solution choisie est de :
+- synchroniser le texte et l'audio/vidéo (au moins sur les éléments dont le timestamp est connu)
+- pouvoir manipuler le DOM librement (correction / ajout de texte / ...) => seule façon à priori de conserver une rapidité pour se rapprocher du x1+
+- avoir une indication visuelle sur les items/mots sur lesquels il y a un doute élevé
+- pouvoir facilement faire absorber une ligne entière vers la ligne précédente (qu'elle appartienne au même block ou non)
+- pouvoir facilement scinder une ligne en deux lignes
+- pouvoir facilement scinder une ligne et créer un nouveau block
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Objectif archi
+Vérifier si l'utilisation d'un framework de type React est pertinent lorsqu'on doit manipuler le DOM.
 
-## Deploy on Vercel
+## Objectif technique
+Tester React.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# REX
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 1. React pas adapté à une manipulation extérieure du DOM
+
+Solutions identifiées :
+- limiter les dépendances entre composants "feuilles" : fini le drag'n drop
+- gérer le DOM des feuilles sans react. Ici, une feuille correspond à une "ligne".
+
+## 2. Modifier une feuille avec un impact sur d'autres feuilles
+
+Exemples : 
+- je veux pouvoir déplacer la première ligne du speaker `Mme Lulz` dans le block du speaker précédent.
+- je veux pouvoir déplacer le premier mot de la dernière ligne dans la ligne précédente (qui est dans un block précédent)
+- je veux pouvoir couper la première ligne en deux lignes :
+```
+LIGNE QUE JE VEUX COUPER ICI XXX LE RESTE SERA SUR UNE NOUVELLE LIGNE
+=>
+LIGNE QUE JE VEUX COUPER ICI XXX
+LE RESTE SERA SUR UNE NOUVELLE LIGNE
+```
+- Idem en coupant la première ligne et en créant un nouveau block qui contiendra la fin de la ligne coupée
+
+Solutions ?
+- contexte ?
+- state ?
+  - le state est alors dupliqué en partie ?
+
+
+# TL;DR.
+## Usage
+
+`docker-compose up` et aller sur http://127.0.0.1:3000
