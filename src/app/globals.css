@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+.transcriptionEdition {
+  border: 1px solid red;
+  width: 100%;
+}
+
+.transcriptionSeparator {
+  padding: 5px;
+  background-color: blue;
+}
+.transcriptionRow {
+  padding: 10px;
+  border: 10px solid green;
+}
+.transcriptionLine {
+  border: 1px dashed white;
+  padding: 5px;
+  padding-left: 0;
+}
+.word {
+
+}
+.word:hover {
+  background-color: grey;
+}
+.p80, .p90, .p100 {
+  color: green;
+}
+
+.p60, .p70 {
+  color: orange;
+}
+
+.p00, .p10, .p20, .p30, .p40, .p50 {
+  color: red;
+}
+
+.moveLine {
+  width: 1em;
+  padding: 8px;
+  background-color: #66a8cc;
+  cursor: pointer;
+}
+.transcriptionLine:has(.moveLine:hover) {
+  background-color: #66a8cc;
+}
+.transcriptionLine .moveFirstWord,
+.transcriptionLine .firstWord,
+.transcriptionLine .word {
+
+  padding: 8px;
+}
+.moveFirstWord {
+  margin-left:1em;
+  width: 2em;
+  padding: 8px;
+  cursor: pointer;
+  background-color: #998512;
+}
+.firstWord ~ .moveFirstWord{
+  background-color: #998512;
+  border: 10px solid yellow;
+}
+.moveFirstWord:hover ~ .firstWord {
+  background-color: #998512;
+}
