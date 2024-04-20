@@ -7,3 +7,12 @@ services:
     build: .
     ports:
       - "3000:3000"
+
+  caddy:
+    image: caddy
+    container_name: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./public:/srv
+    ports:
+      - "8003:80"
