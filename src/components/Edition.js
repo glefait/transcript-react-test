@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { GenerateDomFromData, ReverseDataFromDom } from '@/components/editionLine.js';
-
+import { TranscriptContext } from '@/components/TranscriptContext';
 
 export function TranscriptionLine({line}){
     const [stateLine, setStateLine] = useState(line);
@@ -69,33 +69,37 @@ export function TranscriptionSpeech({speech_lines}) {
         <div className="basis-5/6">{lines}</div>
     );
 }
-export function TranscriptionUser({user}){
-    return (
-        <div className="basis-1/6">{user.name}</div>
-    );
-}
+export function TranscriptionRow({ uuid  }){
+    const transcription = useContext(TranscriptContext);
+    // ugly && slow => options
+    // 0. keep going for the lulz
+    // 1. (+ perf ?) create a dedicated data structure with map : uuid => Node ?
+    // 2. (+ react ?) move from a map to only arrays (=> probably react maintains its own hash structure ?)
+    const current_speech = transcription['content'].find(row => row.hasOwnProperty("speech") && row['uuid'] == uuid);
 
-export function TranscriptionRow({ current_speech }){
     return (
         <div className="transcriptionRow flex flex-row">
-            <TranscriptionUser user={current_speech.user} />
-            <TranscriptionSpeech speech_lines={current_speech.lines}/>
+            <div className="basis-1/6">{current_speech.speech.user.name}</div>
+            <TranscriptionSpeech speech_lines={current_speech.speech.lines}/>
         </div>
     );
 }
+
 export function TranscriptionSeparator(){
     return (
         <div className="transcriptionSeparator flex flex-row"></div>
     );
 }
-export function TranscriptionEdition({ transcription }) {
-    let i =0;
-    const listItems = transcription.flatMap(row => {
+export function TranscriptionEdition({  }) {
+    const transcription = useContext(TranscriptContext);
+    let i = 0;
+    const listItems = transcription.content.flatMap(row => {
         if (! row.hasOwnProperty("speech")){
             return [];
         }
         let current_speech = row.speech;
-        const t = [<TranscriptionRow current_speech={ current_speech } key={i}/>, <TranscriptionSeparator key={i} />];
+        let current_speech_uuid = row.speech.uuid;
+        const t = [<TranscriptionRow uuid={row.uuid} key={i}/>, <TranscriptionSeparator key={i} />];
         i += 1;
         return t;
     });

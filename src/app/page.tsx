@@ -1,9 +1,11 @@
 "use client"
 import { TranscriptionEdition } from '@/components/Edition.js'
 import React, {useEffect, useState} from 'react';
+import { TranscriptContext } from '@/components/TranscriptContext';
 
 export default function App() {
-    const [ transcription, setTranscription] = useState([]);
+    const [transcription, setTranscription] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetch('/data/transcript-example.json')
@@ -12,13 +14,18 @@ export default function App() {
           })
           .then((data) => {
             console.log(data);
+            setIsLoading(false);
             setTranscription(data);
           });
       }, []);
 
     return (
     <section className="flex">
-         <TranscriptionEdition transcription={transcription} />
+        <TranscriptContext.Provider value={transcription}>
+            {!isLoading &&
+                <TranscriptionEdition />
+            }
+        </TranscriptContext.Provider>
     </section>
   );
 }
