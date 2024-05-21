@@ -79,3 +79,9 @@ Solutions ?
 ## Usage
 
 `docker-compose up` et aller sur http://127.0.0.1:3000
+
+
+### scripts
+
+`node scripts/flatdata.js` produces a flat version of the nested `transcript-example.json`. 
+The resulting file is stored in `public/data/`transcript-example-flat.json`

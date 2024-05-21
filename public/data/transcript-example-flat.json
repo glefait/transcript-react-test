@@ -1,0 +1,263 @@
+{
+    "part-sub-word-0001": {
+        "kind": "subword",
+        "content": "Bon",
+        "ms_start": 10012,
+        "ms_end": 10025,
+        "p": 0.54
+    },
+    "part-sub-word-0002": {
+        "kind": "subword",
+        "content": "jour",
+        "ms_start": 10025,
+        "ms_end": 10035,
+        "p": 0.88
+    },
+    "part-word-0001": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0001",
+            "part-sub-word-0002"
+        ]
+    },
+    "123456-456-abcdefghj-n0f34r": {
+        "kind": "edition",
+        "content": "Madame Lulz"
+    },
+    "part-sub-word-0003": {
+        "kind": "subword",
+        "content": "ca",
+        "ms_start": 10102,
+        "ms_end": 10125,
+        "p": 0.74
+    },
+    "part-word-0003": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0003"
+        ]
+    },
+    "part-sub-word-0004": {
+        "kind": "subword",
+        "content": "va ?",
+        "ms_start": 10132,
+        "ms_end": 10155,
+        "p": 0.99
+    },
+    "part-word-0004": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0004"
+        ]
+    },
+    "line-001-0001": {
+        "kind": "line",
+        "children": [
+            "part-word-0001",
+            "123456-456-abcdefghj-n0f34r",
+            "part-word-0003",
+            "part-word-0004"
+        ]
+    },
+    "blo-ck-0001": {
+        "kind": "block",
+        "children": [
+            "line-001-0001"
+        ],
+        "user": {
+            "name": "M. Anonymous",
+            "uuid": "spea-ker-0001"
+        }
+    },
+    "part-sub-word-0006": {
+        "kind": "subword",
+        "content": "Bon",
+        "ms_start": 20012,
+        "ms_end": 20025,
+        "p": 0.64
+    },
+    "part-sub-word-0007": {
+        "kind": "subword",
+        "content": "soir,",
+        "ms_start": 20025,
+        "ms_end": 20035,
+        "p": 0.88
+    },
+    "part-word-0005": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0006",
+            "part-sub-word-0007"
+        ]
+    },
+    "part-sub-word-0008": {
+        "kind": "subword",
+        "content": "ça",
+        "ms_start": 20102,
+        "ms_end": 20125,
+        "p": 0.84
+    },
+    "part-word-0006": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0008"
+        ]
+    },
+    "part-sub-word-0009": {
+        "kind": "subword",
+        "content": "va",
+        "ms_start": 10132,
+        "ms_end": 10155,
+        "p": 0.69
+    },
+    "part-word-0007": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0009"
+        ]
+    },
+    "part-sub-word-0010": {
+        "kind": "subword",
+        "content": "bien.",
+        "ms_start": 20172,
+        "ms_end": 20215,
+        "p": 0.79
+    },
+    "part-word-0008": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0010"
+        ]
+    },
+    "line-002-0001": {
+        "kind": "line",
+        "children": [
+            "part-word-0005",
+            "part-word-0006",
+            "part-word-0007",
+            "part-word-0008"
+        ]
+    },
+    "part-sub-word-0011": {
+        "kind": "subword",
+        "content": "Et",
+        "ms_start": 30012,
+        "ms_end": 30025,
+        "p": 0.64
+    },
+    "part-word-0009": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0011"
+        ]
+    },
+    "part-sub-word-0012": {
+        "kind": "subword",
+        "content": "ta",
+        "ms_start": 30112,
+        "ms_end": 30125,
+        "p": 0.84
+    },
+    "part-word-0010": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0012"
+        ]
+    },
+    "part-sub-word-0013": {
+        "kind": "subword",
+        "content": "mère?",
+        "ms_start": 30212,
+        "ms_end": 30225,
+        "p": 0.54
+    },
+    "part-word-0011": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0013"
+        ]
+    },
+    "line-002-0002": {
+        "kind": "line",
+        "children": [
+            "part-word-0009",
+            "part-word-0010",
+            "part-word-0011"
+        ]
+    },
+    "blo-ck-0002": {
+        "kind": "block",
+        "children": [
+            "line-002-0001",
+            "line-002-0002"
+        ],
+        "user": {
+            "name": "Mme Lulz",
+            "uuid": "spea-ker-0002"
+        }
+    },
+    "part-sub-word-0014": {
+        "kind": "subword",
+        "content": "J'",
+        "ms_start": 30012,
+        "ms_end": 30025,
+        "p": 0.64
+    },
+    "part-sub-word-0015": {
+        "kind": "subword",
+        "content": "ai",
+        "ms_start": 30025,
+        "ms_end": 30035,
+        "p": 0.88
+    },
+    "part-word-0012": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0014",
+            "part-sub-word-0015"
+        ]
+    },
+    "part-sub-word-0016": {
+        "kind": "subword",
+        "content": "trop",
+        "ms_start": 30102,
+        "ms_end": 30125,
+        "p": 0.74
+    },
+    "part-word-0013": {
+        "kind": "word",
+        "children": [
+            "part-sub-word-0016"
+        ]
+    },
+    "123456-789-abcdefghj-n0f34r": {
+        "kind": "edition",
+        "content": "peur!"
+    },
+    "line-003-0001": {
+        "kind": "line",
+        "children": [
+            "part-word-0012",
+            "part-word-0013",
+            "123456-789-abcdefghj-n0f34r"
+        ]
+    },
+    "blo-ck-0003": {
+        "kind": "block",
+        "children": [
+            "line-003-0001"
+        ],
+        "user": {
+            "name": "M. Anonymous",
+            "uuid": "spea-ker-0001"
+        }
+    },
+    "demo-tran-scr-ipt-001": {
+        "kind": "transcription",
+        "children": [
+            "blo-ck-0001",
+            "blo-ck-0002",
+            "blo-ck-0003"
+        ]
+    }
+}
