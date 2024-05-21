@@ -1,22 +1,29 @@
 [
   {
+    "block_type": "speech",
+    "uuid": "blo-ck-0001",
     "speech": {
       "user": {
-        "name": "M. Anonymous"
+        "name": "M. Anonymous",
+        "uuid": "spea-ker-0001"
       },
       "lines": [
         {
+          "uuid": "line-001-0001",
           "parts": [
             {
+              "uuid": "part-word-0001",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0001",
                   "content": "Bon",
                   "ms_start": 10012,
                   "ms_end": 10025,
                   "p": 0.54
                 },
                 {
+                  "uuid": "part-sub-word-0002",
                   "content": "jour",
                   "ms_start": 10025,
                   "ms_end": 10035,
@@ -30,9 +37,11 @@
               "uuid": "123456-456-abcdefghj-n0f34r"
             },
             {
+              "uuid": "part-word-0003",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0003",
                   "content": "ca",
                   "ms_start": 10102,
                   "ms_end": 10125,
@@ -41,9 +50,11 @@
               ]
             },
             {
+              "uuid": "part-word-0004",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0004",
                   "content": "va ?",
                   "ms_start": 10132,
                   "ms_end": 10155,
@@ -57,23 +68,30 @@
     }
   },
   {
+    "block_type": "speech",
+    "uuid": "blo-ck-0002",
     "speech": {
       "user": {
-        "name": "Mme Lulz"
+        "name": "Mme Lulz",
+        "uuid": "spea-ker-0002"
       },
       "lines": [
         {
+          "uuid": "line-002-0001",
           "parts": [
             {
+              "uuid": "part-word-0005",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0006",
                   "content": "Bon",
                   "ms_start": 20012,
                   "ms_end": 20025,
                   "p": 0.64
                 },
                 {
+                  "uuid": "part-sub-word-0007",
                   "content": "soir,",
                   "ms_start": 20025,
                   "ms_end": 20035,
@@ -82,9 +100,11 @@
               ]
             },
             {
+              "uuid": "part-word-0006",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0008",
                   "content": "ça",
                   "ms_start": 20102,
                   "ms_end": 20125,
@@ -93,9 +113,11 @@
               ]
             },
             {
+              "uuid": "part-word-0007",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0009",
                   "content": "va",
                   "ms_start": 10132,
                   "ms_end": 10155,
@@ -104,9 +126,11 @@
               ]
             },
             {
+              "uuid": "part-word-0008",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0010",
                   "content": "bien.",
                   "ms_start": 20172,
                   "ms_end": 20215,
@@ -117,11 +141,14 @@
           ]
         },
         {
+          "uuid": "line-002-0002",
           "parts": [
             {
+              "uuid": "part-word-0009",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0011",
                   "content": "Et",
                   "ms_start": 30012,
                   "ms_end": 30025,
@@ -130,9 +157,11 @@
               ]
             },
             {
+              "uuid": "part-word-0010",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0012",
                   "content": "ta",
                   "ms_start": 30112,
                   "ms_end": 30125,
@@ -141,9 +170,11 @@
               ]
             },
             {
+              "uuid": "part-word-0011",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0013",
                   "content": "mère?",
                   "ms_start": 30212,
                   "ms_end": 30225,
@@ -157,23 +188,30 @@
     }
   },
   {
+    "block_type": "speech",
+    "uuid": "blo-ck-0003",
     "speech": {
       "user": {
-        "name": "M. Anonymous"
+        "name": "M. Anonymous",
+        "uuid": "spea-ker-0001"
       },
       "lines": [
         {
+          "uuid": "line-003-0001",
           "parts": [
             {
+              "uuid": "part-word-0012",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0014",
                   "content": "J'",
                   "ms_start": 30012,
                   "ms_end": 30025,
                   "p": 0.64
                 },
                 {
+                  "uuid": "part-sub-word-0015",
                   "content": "ai",
                   "ms_start": 30025,
                   "ms_end": 30035,
@@ -182,9 +220,11 @@
               ]
             },
             {
+              "uuid": "part-word-0013",
               "kind": "word",
               "subwords": [
                 {
+                  "uuid": "part-sub-word-0016",
                   "content": "trop",
                   "ms_start": 30102,
                   "ms_end": 30125,
@@ -195,7 +235,7 @@
             {
               "kind": "edition",
               "content": "peur!",
-              "uuid": "123456-456-abcdefghj-n0f34r"
+              "uuid": "123456-789-abcdefghj-n0f34r"
             }
           ]
         }
