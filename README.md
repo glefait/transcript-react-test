@@ -44,7 +44,7 @@ La solution choisie est de :
 ### Objectif archi
 Vérifier si l'utilisation d'un framework de type React est pertinent lorsqu'on doit manipuler le DOM.
 
-## Objectif technique
+### Objectif technique
 Tester React.
 
 # REX
@@ -79,6 +79,10 @@ Solutions ?
 ## Usage
 
 `docker-compose up` et aller sur http://127.0.0.1:3000
+
+### Flat + Full react edition
+
+http://127.0.0.1:3000/flat
 
 
 ### scripts
