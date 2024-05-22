@@ -2,6 +2,7 @@
 import { TranscriptionEdition } from '@/components/EditionFlat.js'
 import React, {useEffect, useState} from 'react';
 import { TranscriptContext } from '@/components/TranscriptContext';
+import {addSomeReferencesInFlatDataStructure} from "@/components/DataStructure";
 
 export default function App() {
     const [transcription, setTranscription] = useState([]);
@@ -15,6 +16,7 @@ export default function App() {
           })
           .then((data) => {
             console.log(data);
+            data = addSomeReferencesInFlatDataStructure(data);
             for (const key of Object.keys(data)) {
                 if (data[key].kind == "transcription") {
                     setRootUUID(key);

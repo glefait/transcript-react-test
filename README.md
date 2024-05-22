@@ -78,11 +78,18 @@ Solutions ?
 # TL;DR.
 ## Usage
 
-`docker-compose up` et aller sur http://127.0.0.1:3000
+```bash
+docker compose up
+docker compose build
+```
 
-### Flat + Full react edition
-
-http://127.0.0.1:3000/flat
+| Feat                      | Tree React            | Flat Full React            | Flat + DOM   |
+|---------------------------|-----------------------|----------------------------|--------------|
+| url                       | http://127.0.0.1:3000 | http://127.0.0.1:3000/flat |http://127.0.0.1:3000/flat-dom|
+| move Word Above           |                       | X                          |              |
+| move line Above           |                       | X                          |              |
+| click on JSON => log JSON |                       | X                          |              |
+| Handle content            | not sure              | not sure                  | yes in legacy |
 
 
 ### scripts
