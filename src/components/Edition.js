@@ -43,13 +43,13 @@ export function TranscriptionLine({line}){
         <p className="transcriptionLine"
            onFocus={onFocus}
            onBlur={onBlur}
-           contentEditable suppressContentEditableWarning
-           spellCheck="false" // why not
            role="textbox" tabIndex={0}>
             <span onClick={onMoveLineAbove} className="moveLine uxOnly">^</span>
             <span onClick={onGetLineJSON} className="showJson uxOnly">json</span>
             <span onClick={onMoveFirstWordAbove} className="moveFirstWord uxOnly">..</span>
-            {parts}
+            <span className="editableLine" contentEditable={true} spellCheck="false">
+                {parts}
+            </span>
         </p>
     );
 }
