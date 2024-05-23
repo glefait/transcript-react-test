@@ -39,7 +39,7 @@ export function GenerateDomFromData(childrenUUIDs) {
     return parts;
 }
 
-export function TranscriptionLine({uuid}) {
+export function TranscriptionLineDom({uuid}) {
     const {transcription, setTranscription} = useContext(TranscriptContext);
 
     const parts = GenerateDomFromData(transcription[uuid].children);
@@ -53,52 +53,5 @@ export function TranscriptionLine({uuid}) {
                 {parts}
             </span>
         </p>
-    );
-}
-export function TranscriptionSpeech({ children_uuids }) {
-    const { transcription, setTranscription } = useContext(TranscriptContext);
-    const onBlur = () => {
-        console.log("TranscriptionSpeech:onBlur");
-    }
-    // console.log("my object: %o", speech_lines)
-    let i = 0;
-    const lines = children_uuids.map((lineUUID) => {
-        i += 1;
-        // @ts-ignore
-        return <TranscriptionLine onBlur={onBlur} uuid={lineUUID} key={i} />
-    })
-    return (
-        <div className="basis-5/6">{lines}</div>
-    );
-}
-export function TranscriptionRow({ uuid  }){
-    const { transcription, setTranscription } = useContext(TranscriptContext);
-    const current_speech = transcription[uuid];
-
-    return (
-        <div className="transcriptionRow flex flex-row">
-            <div className="basis-1/6">{current_speech.user.name}</div>
-            <TranscriptionSpeech children_uuids={current_speech.children} />
-        </div>
-    );
-}
-
-export function TranscriptionSeparator(){
-    return (
-        <div className="transcriptionSeparator flex flex-row"></div>
-    );
-}
-export function TranscriptionEdition({ uuid }) {
-    const { transcription, setTranscription } = useContext(TranscriptContext);
-
-    const listItems = transcription[uuid].children.flatMap(blockUUID => {
-        const row = transcription[blockUUID];
-        const t = [<TranscriptionRow uuid={blockUUID} key={blockUUID}/>, <TranscriptionSeparator key={"sep_" + blockUUID} />];
-        return t;
-    });
-    return (
-        <div className="transcriptionEdition">
-            {listItems}
-        </div>
     );
 }

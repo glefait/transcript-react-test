@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
 import { useState, useContext } from 'react';
+import { DomManualManagementContext } from '@/components/DomManualManagementContext';
 import { TranscriptContext } from '@/components/TranscriptContext';
 import {v4 as uuidv4} from 'uuid';
+import {TranscriptionLineDom} from "@/components/EditionFlatDom";
+
 
 
 
@@ -75,7 +78,6 @@ export function TranscriptionLine({uuid}) {
             // TBC: if any, line jump over empty block(s)
             const currentParentUUID = transcription[uuid].parent;
             const newParentUUID = transcription[transcription[uuid].prevLine].parent;
-            console.log(currentParentUUID + " === " + newParentUUID + " => " + currentParentUUID === newParentUUID);
             if (currentParentUUID === newParentUUID) {
                 console.log("we allow only to move the first line, ignored");
                 return true;
@@ -219,6 +221,7 @@ export function TranscriptionLine({uuid}) {
 }
 export function TranscriptionSpeech({ children_uuids }) {
     const { transcription, setTranscription } = useContext(TranscriptContext);
+    const domManualManagement = useContext(DomManualManagementContext);
     const onBlur = () => {
         console.log("TranscriptionSpeech:onBlur");
     }
@@ -227,7 +230,11 @@ export function TranscriptionSpeech({ children_uuids }) {
     const lines = children_uuids.map((lineUUID) => {
         i += 1;
         // @ts-ignore
-        return <TranscriptionLine onBlur={onBlur} uuid={lineUUID} key={i} />
+        if (domManualManagement) {
+            return <TranscriptionLineDom onBlur={onBlur} uuid={lineUUID} key={lineUUID}/>
+        } else {
+            return <TranscriptionLine onBlur={onBlur} uuid={lineUUID} key={lineUUID}/>
+        }
     })
     return (
         <div className="basis-5/6">{lines}</div>

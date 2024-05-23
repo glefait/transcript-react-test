@@ -89,7 +89,7 @@ docker compose build
 | move Word Above           |                       | X                          |              |
 | move line Above           |                       | X                          |              |
 | click on JSON => log JSON |                       | X                          |              |
-| Handle content            | not sure              | not sure                  | yes in legacy |
+| Handle editable content   | not sure              | not sure                  | yes in legacy |
 
 
 ### scripts

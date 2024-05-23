@@ -2,9 +2,10 @@
 import { TranscriptionEdition } from '@/components/EditionFlat.js'
 import React, {useEffect, useState} from 'react';
 import { TranscriptContext } from '@/components/TranscriptContext';
+import { DomManualManagementContext } from '@/components/DomManualManagementContext';
 import {addSomeReferencesInFlatDataStructure} from "@/components/DataStructure";
 
-export default function App() {
+export function AppWithDom(domManualManagement= false) {
     const [transcription, setTranscription] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [rootUUID, setRootUUID] = useState("");
@@ -29,12 +30,17 @@ export default function App() {
 
     return (
     <section className="flex">
-        <TranscriptContext.Provider value={{ transcription, setTranscription }}>
-            {!isLoading &&
-                <TranscriptionEdition uuid={ rootUUID } />
-            }
-        </TranscriptContext.Provider>
+        <DomManualManagementContext.Provider value={ domManualManagement }>
+            <TranscriptContext.Provider value={{ transcription, setTranscription }}>
+                {!isLoading &&
+                    <TranscriptionEdition uuid={ rootUUID } />
+                }
+            </TranscriptContext.Provider>
+        </DomManualManagementContext.Provider>
     </section>
   );
 }
 
+export default function App() {
+    return AppWithDom(false);
+}
