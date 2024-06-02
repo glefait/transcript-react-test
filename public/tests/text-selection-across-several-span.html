@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Can we select text over several span ?</title>
+    <style>span {
+        padding:5px;
+    }</style>
+</head>
+<body>
+
+<h3>No content editable</h3>
+<p><span>first</span><span>second</span><span>and</span><span><span>subwords</span></span></p>
+
+
+<h3>Global p with content editable set</h3>
+<p contenteditable="true"><span>first</span><span>second</span><span>and</span><span><span>subwords</span></span></p>
+
+<h3>spans with content editable set</h3>
+<p>
+    <span contenteditable="true">first</span>
+    <span contenteditable="true">second</span>
+    <span contenteditable="true">and</span>
+    <span><span contenteditable="true">subwords</span></span>
+</p>
+
+<h3>p & first-level spans are contenteditable</h3>
+<p contenteditable="true">
+    <span contenteditable="true">first</span>
+    <span contenteditable="true">second</span>
+    <span contenteditable="true">and</span>
+    <span><span contenteditable="true">subwords</span></span>
+</p>
+
+</body>
+</html>

@@ -39,3 +39,37 @@ export function addSomeReferencesInFlatDataStructure(data) {
 
     return data;
 }
+
+
+/**
+ * some data may be deleted
+ */
+export function findDifferences(updates, currentUUID, currentContent, newChildrenUUIDs) {
+    const existingChildrenUUIDs = currentContent.children;
+    const currentSubWordUUIDsSet = new Set(newChildrenUUIDs);
+    const contextSubWordUUIDsSet = new Set(existingChildrenUUIDs);
+    // cannot do difference yet, need firefox 127 => 2024-06-11
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/difference
+    // TODO: use difference between sets after GA on firefox. See also below
+    for (const curUUID of contextSubWordUUIDsSet) {
+        if (! currentSubWordUUIDsSet.has(curUUID)) {
+            updates[curUUID] = undefined;
+        }
+    }
+    let replaceChildren = newChildrenUUIDs.length != existingChildrenUUIDs.length;
+    if (!replaceChildren) {
+        for (let i=0; i<newChildrenUUIDs.length; i++) {
+            if (newChildrenUUIDs[i] != existingChildrenUUIDs[i]) {
+                replaceChildren = true;
+                break;
+            }
+        }
+    }
+    if (replaceChildren) {
+        updates[currentUUID] = {
+            ...currentContent,
+            "children": newChildrenUUIDs
+        }
+    }
+    return updates;
+}

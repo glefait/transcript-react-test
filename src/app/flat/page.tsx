@@ -3,6 +3,7 @@ import { TranscriptionEdition } from '@/components/EditionFlat.js'
 import React, {useEffect, useState} from 'react';
 import { TranscriptContext } from '@/components/TranscriptContext';
 import { DomManualManagementContext } from '@/components/DomManualManagementContext';
+import { TranscriptFlatRootContext } from '@/components/TranscriptFlatRootContext';
 import {addSomeReferencesInFlatDataStructure} from "@/components/DataStructure";
 
 export function AppWithDom(domManualManagement= false) {
@@ -30,13 +31,16 @@ export function AppWithDom(domManualManagement= false) {
 
     return (
     <section className="flex">
-        <DomManualManagementContext.Provider value={ domManualManagement }>
-            <TranscriptContext.Provider value={{ transcription, setTranscription }}>
-                {!isLoading &&
-                    <TranscriptionEdition uuid={ rootUUID } />
-                }
-            </TranscriptContext.Provider>
-        </DomManualManagementContext.Provider>
+
+        <TranscriptFlatRootContext.Provider value={rootUUID}>
+            <DomManualManagementContext.Provider value={ domManualManagement }>
+                <TranscriptContext.Provider value={{ transcription, setTranscription }}>
+                    {!isLoading &&
+                        <TranscriptionEdition uuid={ rootUUID } />
+                    }
+                </TranscriptContext.Provider>
+            </DomManualManagementContext.Provider>
+        </TranscriptFlatRootContext.Provider>
     </section>
   );
 }

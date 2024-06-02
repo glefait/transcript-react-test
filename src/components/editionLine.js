@@ -41,7 +41,7 @@ export function ReverseDataFromDom(lineNode) {
         .filter(n => ! n.classList.contains('uxOnly'));
 
     // 2. for each part, either its an edition or a word containing subwords
-    // TODO: can added text goes in another
+    // TODO: can added text goes in another span ? Before, between or after the last span ?
     let reversedData = {"parts": []}
     for (let i=0; i<interestingPart.length; i++) {
         if (interestingPart[i].childElementCount == 0){

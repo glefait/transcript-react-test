@@ -5,16 +5,47 @@ import { DomManualManagementContext } from '@/components/DomManualManagementCont
 import { TranscriptContext } from '@/components/TranscriptContext';
 import {v4 as uuidv4} from 'uuid';
 import {TranscriptionLineDom} from "@/components/EditionFlatDom";
+import { findDifferences } from '@/components/DataStructure';
 
-
+import { TranscriptFlatRootContext } from '@/components/TranscriptFlatRootContext';
 
 
 export function TranscriptionEditedWord({ uuid, firstPosition }) {
     const {transcription, setTranscription} = useContext(TranscriptContext);
 
     const inputChangeHandler = (event) => {
+        event.stopPropagation();
         //this.setState({input: event.target.value});
-        console.log("input uuid " + event);
+        console.log("inputChangeHandler uuid " + event);
+    }
+
+    const changeChangeHandler = (event) => {
+        event.stopPropagation();
+        //this.setState({input: event.target.value});
+        console.log("change uuid " + event);
+    }
+
+    const blurChangeHandler = (event) => {
+        event.stopPropagation();
+        //this.setState({input: event.target.value});
+        console.log("blur: uuid " + event);
+    }
+
+    const part = transcription[uuid];
+     return (
+        <span className={"" + (firstPosition ? " firstWord" : "") } key={uuid} x-data-uuid={uuid}
+              contentEditable={true}
+              onInput={inputChangeHandler} onChange={changeChangeHandler} onBlur={blurChangeHandler}
+        >
+            { part.content }
+        </span>
+    );
+}
+export function TranscriptionSubWord({ uuid }) {
+    const {transcription, setTranscription} = useContext(TranscriptContext);
+    const inputChangeHandler = (event) => {
+        //this.setState({input: event.target.value});
+        console.log("inputChangeHandler uuid " + event);
     }
 
     const changeChangeHandler = (event) => {
@@ -26,21 +57,15 @@ export function TranscriptionEditedWord({ uuid, firstPosition }) {
         //this.setState({input: event.target.value});
         console.log("blur: uuid " + event);
     }
-
-    const part = transcription[uuid];
-     return (
-        <span className={"" + (firstPosition ? " firstWord" : "") } key={uuid} x-data-uuid={uuid}
-              onInput={inputChangeHandler} onChange={changeChangeHandler} onBlur={blurChangeHandler}  >
-            { part.content }
-        </span>
-    );
-}
-export function TranscriptionSubWord({ uuid }) {
-    const {transcription, setTranscription} = useContext(TranscriptContext);
-
     const subword = transcription[uuid];
     return (
-         <span className={"p" + (100 * subword.p.toFixed(1))} key={uuid} x-data-p={subword.p} x-data-ms-start={subword.ms_start} x-data-ms-end={subword.ms_end}>
+         <span className={"p" + (100 * subword.p.toFixed(1))} key={uuid}
+               x-data-uuid={uuid}
+               x-data-p={subword.p}
+               x-data-ms-start={subword.ms_start} x-data-ms-end={subword.ms_end}
+              contentEditable={true}
+              onInput={inputChangeHandler} onChange={changeChangeHandler} onBlur={blurChangeHandler}
+         >
             {subword.content}
         </span>
     );
@@ -52,7 +77,10 @@ export function TranscriptionWord({ uuid, firstPosition }) {
         return <TranscriptionSubWord uuid={childrenUUID} firstPosition={firstPosition} key={childrenUUID} />
     })
     return (
-         <span className={"word" + (firstPosition ? " firstWord" : "")} key={uuid}>
+         <span className={"word" + (firstPosition ? " firstWord" : "")}
+               key={uuid}
+               x-data-uuid={uuid}
+         >
             {subwords}
         </span>
     );
@@ -60,6 +88,7 @@ export function TranscriptionWord({ uuid, firstPosition }) {
 
 export function TranscriptionLine({uuid}) {
     const {transcription, setTranscription} = useContext(TranscriptContext);
+    // const rootUUID = useContext(TranscriptFlatRootContext);
     //const [stateLine, setStateLine] = useState(line);
 
     const parts = transcription[uuid].children.map((childrenUUID, index) => {
@@ -207,13 +236,86 @@ export function TranscriptionLine({uuid}) {
         e.stopPropagation();
         console.log(JSON.stringify(transcription));
     }
+
+    const onInput = (e) => {
+        //e.stopPropagation();
+        console.log("input event from line" + e);
+    }
+    const onBlur = (e) => {
+        //e.stopPropagation();
+        console.log("onBlur event from line" + e);
+    }
+    const onFocus = (e) => {
+        //e.stopPropagation();
+        console.log("onFocus event from line" + e);
+    }
+
+    const inputChangeHandler = (event) => {
+        //this.setState({input: event.target.value});
+        console.log("TranscriptionLine > inputChangeHandler.");
+        const currentCaret = window.getSelection();
+        console.log("Cursor is " + currentCaret.focusNode.parentElement.getAttribute("x-data-uuid")
+            + ", pos = " + currentCaret.getRangeAt(0).startOffset);
+        const htmlAfterModifications = Array.from(event.currentTarget.children);
+        console.log(htmlAfterModifications);
+        console.log(event.currentTarget);
+        let topChildren = [];
+        let updates = {};
+        for (let i=0; i<htmlAfterModifications.length; i++) {
+            const currentEltUUID = htmlAfterModifications[i].getAttribute("x-data-uuid");
+            topChildren.push(currentEltUUID);
+            if (htmlAfterModifications[i].childElementCount == 0) {
+                if (htmlAfterModifications[i].innerText != transcription[currentEltUUID].content) {
+                    updates[currentEltUUID] = {
+                        ...transcription[currentEltUUID],
+                        "content": htmlAfterModifications[i].innerText
+                    }
+                }
+            } else {
+                let wordChildren = [];
+                for (let j=0; j<htmlAfterModifications[i].childElementCount; j++) {
+                    const subword = htmlAfterModifications[i].children[j];
+                    const subwordUUID = subword.getAttribute("x-data-uuid");
+                    wordChildren.push(subwordUUID);
+                    if (subword.innerText != transcription[subwordUUID]) {
+                        updates[subwordUUID] = {
+                            ...transcription[subwordUUID],
+                            "content": subword.innerText
+                        }
+                    }
+                }
+                updates = findDifferences(updates, currentEltUUID, transcription[currentEltUUID], wordChildren);
+            }
+        }
+        updates = findDifferences(updates, uuid, transcription[uuid], topChildren);
+        console.log(updates);
+        const newTranscription = {
+            ...transcription,
+            ...updates
+        }
+        setTranscription(newTranscription)
+
+
+    }
+
+    const changeChangeHandler = (event) => {
+        //this.setState({input: event.target.value});
+        console.log("change uuid " + event);
+    }
+
     return (
        <p className="transcriptionLine"
           role="textbox" tabIndex={0}>
             <span className="moveLine uxOnly" onClick={onMoveLineAbove}>^</span>
             <span className="showJson uxOnly" onClick={onGetLineJSON}>json</span>
             <span className="moveFirstWord uxOnly" onClick={onMoveFirstWordAbove}>..</span>
-            <span className="editableLine" contentEditable={true} spellCheck="false">
+            <span className="editableLine" contentEditable={true} spellCheck="false"
+                  x-data-uuid={uuid}
+                  onBlur={inputChangeHandler}
+                  onFocus={onFocus}
+                  //onInput={inputChangeHandler}
+                  onChange={changeChangeHandler}
+            >
                 {parts}
             </span>
         </p>
