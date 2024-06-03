@@ -69,6 +69,7 @@ body {
   cursor: pointer;
   background-color: #998512;
   border:1px solid yellow;
+  border-right: 0;
 }
 .firstWord ~ .moveFirstWord{
   background-color: #998512;
@@ -87,7 +88,8 @@ body {
   outline: 0px solid transparent;
 }
 .firstWord {
-  border: 1px solid pink;
+  border:1px solid yellow;
+  border-left:0;
 }
 .showJson {
   cursor: pointer;
@@ -122,9 +124,12 @@ body {
 .transcriptionLine .moveFirstWord,
 .transcriptionLine .firstWord,
 .transcriptionLine .word {
-  padding: 8px;
+  padding: 6px;
+}
+.transcriptionLine .word {
+  padding-left: 0;
+  padding-right: 0;
 }
 .firstWord {
-  margin-left:0;
-  padding-left:0;
+  margin-left:0px;
 }

@@ -83,13 +83,14 @@ docker compose up
 docker compose build
 ```
 
-| Feat                      | Tree React            | Flat Full React            | Flat + DOM   |
-|---------------------------|-----------------------|----------------------------|--------------|
-| url                       | http://127.0.0.1:3000 | http://127.0.0.1:3000/flat |http://127.0.0.1:3000/flat-dom|
-| move Word Above           |                       | X                          |              |
-| move line Above           |                       | X                          |              |
-| click on JSON => log JSON |                       | X                          |              |
-| Handle editable content   | not sure              | not sure                  | yes in legacy |
+| Feat                      | Tree React            | Flat + Manual React              | Flat + DOM                     |
+|---------------------------|-----------------------|----------------------------------|--------------------------------|
+| url                       | http://127.0.0.1:3000 | http://127.0.0.1:3000/flat       | http://127.0.0.1:3000/flat-dom |
+| move Word Above           |                       | X                                | X                              |
+| move line Above           |                       | X                                | X                              |
+| click on JSON => log JSON |                       | X                                | X                              |
+| Handle editable content   | not sure              | no => fail when span are deleted | yes                            |
+| -                         |                       |                                  |                                |
 
 
 ### scripts

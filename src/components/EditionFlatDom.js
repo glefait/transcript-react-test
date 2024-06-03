@@ -2,7 +2,7 @@
 import React from "react";
 import { useState, useContext } from 'react';
 import { TranscriptContext } from '@/components/TranscriptContext';
-import {findDifferences} from "@/components/DataStructure";
+import {findDifferences, moveLine, moveFirstWordAbove} from "@/components/DataStructure";
 
 
 export function GenerateDomTextFromData(childrenUUIDs) {
@@ -100,6 +100,26 @@ export function IdentifyUpdatesFromReversedDataFromDom(lineUUID, newDomData, tra
 
 export function TranscriptionLineDom({uuid}) {
     const {transcription, setTranscription} = useContext(TranscriptContext);
+    const onMoveLineAbove = (e) => {
+        e.stopPropagation();
+        console.log("moveLineAbove:" + uuid);
+        const updates = moveLine(uuid, transcription);
+        const newTranscription = {
+            ...transcription,
+            ...updates
+        }
+        setTranscription(newTranscription)
+    }
+    const onMoveFirstWordAbove = (e) => {
+        e.stopPropagation();
+        console.log("onMoveFirstWordAbove:" + uuid);
+        const updates = moveFirstWordAbove(uuid, transcription);
+        const newTranscription = {
+            ...transcription,
+            ...updates
+        }
+        setTranscription(newTranscription)
+    }
     const onGetLineJSON = (e) => {
         e.stopPropagation();
         console.log(JSON.stringify(transcription));
@@ -126,9 +146,9 @@ export function TranscriptionLineDom({uuid}) {
     let x = (
        <p className="transcriptionLine"
           role="textbox" tabIndex={0}>
-            <span className="moveLine uxOnly">^</span>
+            <span className="moveLine uxOnly" onClick={onMoveLineAbove}>^</span>
             <span className="showJson uxOnly" onClick={onGetLineJSON}>json</span>
-            <span className="moveFirstWord uxOnly">..</span>
+            <span className="moveFirstWord uxOnly" onClick={onMoveFirstWordAbove}>..</span>
             <span className="editableLine" contentEditable={true} spellCheck="false"
                   x-data-uuid={uuid}
                   onBlur={inputChangeHandler}

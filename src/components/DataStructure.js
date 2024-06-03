@@ -1,3 +1,5 @@
+import {v4 as uuidv4} from "uuid";
+
 export function addSomeReferencesInFlatDataStructure(data) {
     // - block => prev / next
     // - line => prev / next, parent
@@ -69,6 +71,130 @@ export function findDifferences(updates, currentUUID, currentContent, newChildre
         updates[currentUUID] = {
             ...currentContent,
             "children": newChildrenUUIDs
+        }
+    }
+    return updates;
+}
+
+
+export function moveLine(uuid, transcription) {
+    let updates = {}
+    if (transcription[uuid].prevLine !== null) {
+        // TBC: it should happen only on the first line ? Or if second line, move all above at once ?
+        // TBC: if any, line jump over empty block(s)
+        const currentParentUUID = transcription[uuid].parent;
+        const newParentUUID = transcription[transcription[uuid].prevLine].parent;
+        if (currentParentUUID === newParentUUID) {
+            console.log("we allow only to move the first line, ignored");
+            return true;
+        }
+        updates = {
+            [currentParentUUID]: {
+                ...transcription[currentParentUUID],
+                children: transcription[currentParentUUID].children.slice(1)
+            },
+            [newParentUUID]: {
+                ...transcription[newParentUUID],
+                children: transcription[newParentUUID].children.concat([uuid])
+            },
+            [uuid]: {
+                ...transcription[uuid],
+                parent: newParentUUID
+            }
+        }
+    }else{
+         const newCreatedBlock = {
+            kind: "block",
+            prevBlock: null,
+            nextBlock: transcription[uuid].parent,
+            user: {
+                name: "unknown",
+                uuid: uuidv4()
+            },
+            children: [uuid],
+            parent: transcription[transcription[uuid].parent].parent
+        }
+        const newCreatedBlockUUID =  uuidv4();
+        const updatedRoot = {
+            kind: "transcription",
+            children: [newCreatedBlockUUID].concat(transcription[newCreatedBlock.parent].children)
+        }
+        const currentParentUUID = transcription[uuid].parent;
+        const updatedParent = {
+            ...transcription[currentParentUUID],
+            children: transcription[currentParentUUID].children.slice(1)
+        }
+        updates = {
+            [newCreatedBlock.parent]: updatedRoot,
+            [newCreatedBlockUUID]: newCreatedBlock,
+            [currentParentUUID]: updatedParent,
+            [uuid]: {
+                ...transcription[uuid],
+                parent: newCreatedBlockUUID
+            },
+        }
+    }
+    return updates;
+}
+
+
+export function moveFirstWordAbove(uuid, transcription) {
+    // get the first word
+    const currentFirstWordUUID = transcription[uuid].children[0];
+    // remove it from the current children
+    const currentLineUpdatedChildren = transcription[uuid].children.slice(1);
+    // TBC: if new line has no child, should we remove it (and remove the block if needed ?)
+    let updates = {}
+    // search for the line above, on the very first line, create a new line
+    if (transcription[uuid].prevLine !== null) {
+        const previousLineUUID = transcription[uuid].prevLine;
+        const previousLineUpdatedChildren = transcription[previousLineUUID].children.concat([currentFirstWordUUID])
+        updates = {
+            [previousLineUUID]: {
+                ...transcription[previousLineUUID],
+                children: previousLineUpdatedChildren
+            },
+            [uuid]: {
+                ...transcription[uuid],
+                children: currentLineUpdatedChildren
+            }
+        }
+    } else {
+        // create a new line + block with unknown user (to be updated with default value ?)
+        const newCreatedLine = {
+            kind: "line",
+            children: [currentFirstWordUUID],
+            prevLine: null,
+            nextLine: uuid,
+            parent: uuidv4()
+        }
+        const newCreatedLineUUID = uuidv4();
+        const newCreatedBlock = {
+            kind: "block",
+            prevBlock: null,
+            nextBlock: transcription[uuid].parent,
+            user: {
+                name: "unknown",
+                uuid: uuidv4()
+            },
+            children: [newCreatedLineUUID],
+            parent: transcription[transcription[uuid].parent].parent
+        }
+        const newCreatedBlockUUID = newCreatedLine.parent;
+        // update root
+        const updatedRoot = {
+            kind: "transcription",
+            children: [newCreatedBlockUUID].concat(transcription[newCreatedBlock.parent].children)
+        }
+        updates = {
+            [newCreatedBlock.parent]: updatedRoot,
+            [newCreatedBlockUUID]: newCreatedBlock,
+            [newCreatedLineUUID]: newCreatedLine,
+            [uuid]: {
+                ...transcription[uuid],
+                prevLine: newCreatedLineUUID,
+                children: currentLineUpdatedChildren
+            },
         }
     }
     return updates;

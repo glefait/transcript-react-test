@@ -6,6 +6,7 @@ import { DomManualManagementContext } from '@/components/DomManualManagementCont
 import { TranscriptFlatRootContext } from '@/components/TranscriptFlatRootContext';
 import {addSomeReferencesInFlatDataStructure} from "@/components/DataStructure";
 
+
 export function AppWithDom(domManualManagement= false) {
     const [transcription, setTranscription] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
