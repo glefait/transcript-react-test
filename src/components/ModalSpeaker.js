@@ -2,27 +2,15 @@
 import '../styles/modal.css';
 import {useContext, useEffect, useState} from "react";
 import {TranscriptContext} from "@/components/TranscriptContext";
+import {TranscriptSpeakerContext} from "@/components/TranscriptSpeakerContext";
 
 
 
 
 export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCandidateUUID, setReplacementCandidateUUID}) => {
     const {transcription, setTranscription} = useContext(TranscriptContext);
-    const [speakersIsLoading, setSpeakersIsLoading] = useState(true);
-    const [speakers, setSpeakers] = useState([]);
+    const {speakers, setSpeakers} = useContext(TranscriptSpeakerContext);
     const [replaceAll, setReplaceAll] = useState(false);
-
-    useEffect(() => {
-        fetch('/data/speakers.json')
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                console.log(data);
-                setSpeakersIsLoading(false);
-                setSpeakers(data);
-            });
-    }, []);
 
     const showHideClassName = showModal ? "modal display-block" : "modal display-none";
 
@@ -30,10 +18,10 @@ export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCand
         return <></>;
     }
     const block = transcription[blockUUID];
-    const username = transcription[block['user']].name;
+    const username = speakers[block['user']].name;
     const current_uuid = block['user'];
 
-    const replacementCandidateName = (replacementCandidateUUID == "" || speakersIsLoading) ? "" : speakers[replacementCandidateUUID].name;
+    const replacementCandidateName = (replacementCandidateUUID == "") ? "" : speakers[replacementCandidateUUID].name;
 
     function form_process_replacement(formData) {
         if (replacementCandidateUUID == "") {
@@ -76,26 +64,21 @@ export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCand
         setReplaceAll(false);
     }
 
-
-
-    // <img className="h-20 w-20 text-center" src={value["picture"]} alt={value["name"]}/>
     let parts = [];
-    if (!speakersIsLoading) {
-        for (const [key, value] of Object.entries(speakers)) {
-            const specific_class = (current_uuid == key) ? "current-speaker" : "select-another-speaker";
-            console.log(current_uuid + "==" + key + " -> " + specific_class);
-            console.log("*****>" + value.name);
-            const modal_speaker_key = `modal-${key}`
-            const onclick = (key == current_uuid) ? () => void(0) : () => setReplacementCandidateUUID(key);
-            const o = (
-                <li className={`"rounded-lg bg-white shadow hover:bg-sky-700 p-2 ${specific_class} max-h-32 items-center justify-center flex"`}
-                    onClick={onclick} key={modal_speaker_key}
-                       >
-                    <p className="text-sm font-medium text-gray-900 text-center">{value["name"]}</p>
-                </li>
-            );
-            parts.push(o);
-        }
+    for (const [key, value] of Object.entries(speakers)) {
+        const specific_class = (current_uuid == key) ? "current-speaker" : "select-another-speaker";
+        console.log(current_uuid + "==" + key + " -> " + specific_class);
+        console.log("*****>" + value.name);
+        const modal_speaker_key = `modal-${key}`
+        const onclick = (key == current_uuid) ? () => void(0) : () => setReplacementCandidateUUID(key);
+        const o = (
+            <li className={`"rounded-lg bg-white shadow hover:bg-sky-700 p-2 ${specific_class} max-h-32 items-center justify-center flex flex-col"`}
+                onClick={onclick} key={modal_speaker_key}
+                   >
+                <p className="text-sm font-medium text-gray-900 text-center">{value["name"]}</p>
+            </li>
+        );
+        parts.push(o);
     }
 
     //     <input type="hidden" name="replace_uuid" value={replacementCandidateUUID}/>

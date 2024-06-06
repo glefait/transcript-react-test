@@ -2,6 +2,7 @@
 import { TranscriptionEdition } from '@/components/EditionFlat.js'
 import React, {useEffect, useState} from 'react';
 import { TranscriptContext } from '@/components/TranscriptContext';
+import {TranscriptSpeakerContext} from "@/components/TranscriptSpeakerContext";
 import { DomManualManagementContext } from '@/components/DomManualManagementContext';
 import { TranscriptFlatRootContext } from '@/components/TranscriptFlatRootContext';
 import {addSomeReferencesInFlatDataStructure} from "@/components/DataStructure";
@@ -9,6 +10,7 @@ import {addSomeReferencesInFlatDataStructure} from "@/components/DataStructure";
 
 export function AppWithDom(domManualManagement= false) {
     const [transcription, setTranscription] = useState([]);
+    const [speakers, setSpeakers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [rootUUID, setRootUUID] = useState("");
 
@@ -25,9 +27,15 @@ export function AppWithDom(domManualManagement= false) {
                     setRootUUID(key);
                 }
             }
-            setIsLoading(false);
             setTranscription(data);
-          });
+          })
+          .then(() => fetch('/data/speakers.json'))
+          .then((res) => { return res.json(); })
+          .then((data) => {
+              console.log(data);
+              setSpeakers(data);
+              setIsLoading(false);
+          })
       }, []);
 
     return (
@@ -36,9 +44,11 @@ export function AppWithDom(domManualManagement= false) {
         <TranscriptFlatRootContext.Provider value={rootUUID}>
             <DomManualManagementContext.Provider value={ domManualManagement }>
                 <TranscriptContext.Provider value={{ transcription, setTranscription }}>
-                    {!isLoading &&
-                        <TranscriptionEdition uuid={ rootUUID } />
-                    }
+                     <TranscriptSpeakerContext.Provider value={{ speakers, setSpeakers }}>
+                        {!isLoading &&
+                            <TranscriptionEdition uuid={ rootUUID } />
+                        }
+                    </TranscriptSpeakerContext.Provider>
                 </TranscriptContext.Provider>
             </DomManualManagementContext.Provider>
         </TranscriptFlatRootContext.Provider>

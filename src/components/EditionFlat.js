@@ -9,6 +9,7 @@ import {findDifferences, moveLine, moveFirstWordAbove} from '@/components/DataSt
 import {ModalSpeaker} from "@/components/ModalSpeaker";
 
 import { TranscriptFlatRootContext } from '@/components/TranscriptFlatRootContext';
+import {TranscriptSpeakerContext} from "@/components/TranscriptSpeakerContext";
 
 
 export function TranscriptionEditedWord({ uuid, firstPosition }) {
@@ -232,12 +233,14 @@ export function TranscriptionSpeech({ children_uuids }) {
 
 export function TranscriptionSpeaker({uuid, modalClick, replacementCandidateUUID, setReplacementCandidateUUID}) {
     const { transcription, setTranscription } = useContext(TranscriptContext);
+    const { speakers, setSpeakers} = useContext(TranscriptSpeakerContext);
     const current_speech = transcription[uuid];
-    const current_speaker = transcription[current_speech.user];
+    const current_speaker = speakers[current_speech.user];
 
     // chrome complained about href="javascript:void(0)"
     // on solution could be to remove it and see if does not change the block position when modal is closed/opened
     // => if this removed, we should change cursor type
+    // {current_speaker.name}
     return (
         <div className="basis-w-[100px]">
             <div className="author w-[100px] h-[100px] bg-red-900">
@@ -266,6 +269,9 @@ export function TranscriptionSeparator(){
 }
 export function TranscriptionEdition({ uuid }) {
     const { transcription, setTranscription } = useContext(TranscriptContext);
+
+    const [speakersIsLoading, setSpeakersIsLoading] = useState(true);
+
     const [showModal, setModal] = useState(false);
     const [dataMore, setDataMore] = useState();
     const [replacementCandidateUUID, setReplacementCandidateUUID] = useState("");
