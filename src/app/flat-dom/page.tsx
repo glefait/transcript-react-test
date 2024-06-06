@@ -1,6 +1,6 @@
 "use client"
 
-import {AppWithDom} from "@/app/flat/page";
+import {AppWithDom} from "@/app/AppWithDom";
 
 export default function App() {
     return AppWithDom(true);
