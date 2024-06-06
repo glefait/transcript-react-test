@@ -64,10 +64,7 @@
         "children": [
             "line-001-0001"
         ],
-        "user": {
-            "name": "M. Anonymous",
-            "uuid": "spea-ker-0001"
-        }
+        "user": "spea-ker-0001"
     },
     "part-sub-word-0006": {
         "kind": "subword",
@@ -191,10 +188,7 @@
             "line-002-0001",
             "line-002-0002"
         ],
-        "user": {
-            "name": "Mme Lulz",
-            "uuid": "spea-ker-0002"
-        }
+        "user": "spea-ker-0002"
     },
     "part-sub-word-0014": {
         "kind": "subword",
@@ -247,10 +241,7 @@
         "children": [
             "line-003-0001"
         ],
-        "user": {
-            "name": "M. Anonymous",
-            "uuid": "spea-ker-0001"
-        }
+        "user": "spea-ker-0001"
     },
     "demo-tran-scr-ipt-001": {
         "kind": "transcription",
@@ -259,5 +250,13 @@
             "blo-ck-0002",
             "blo-ck-0003"
         ]
+    },
+    "spea-ker-0001": {
+        "name": "M. Anonymous",
+        "picture": "/media/user.png"
+    },
+    "spea-ker-0002": {
+        "name": "Mme Lulz Lulz Lulz Lulz",
+        "picture": "/media/user.png"
     }
 }

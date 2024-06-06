@@ -6,6 +6,7 @@ import { TranscriptContext } from '@/components/TranscriptContext';
 import {v4 as uuidv4} from 'uuid';
 import {TranscriptionLineDom} from "@/components/EditionFlatDom";
 import {findDifferences, moveLine, moveFirstWordAbove} from '@/components/DataStructure';
+import {ModalSpeaker} from "@/components/ModalSpeaker";
 
 import { TranscriptFlatRootContext } from '@/components/TranscriptFlatRootContext';
 
@@ -225,25 +226,34 @@ export function TranscriptionSpeech({ children_uuids }) {
         }
     })
     return (
-        <div className="basis-5/6">{lines}</div>
+        <div className="basis-auto" >{lines}</div>
     );
 }
 
-export function TranscriptionSpeaker({uuid}) {
+export function TranscriptionSpeaker({uuid, modalClick, replacementCandidateUUID, setReplacementCandidateUUID}) {
     const { transcription, setTranscription } = useContext(TranscriptContext);
     const current_speech = transcription[uuid];
+    const current_speaker = transcription[current_speech.user];
+
+    // chrome complained about href="javascript:void(0)"
+    // on solution could be to remove it and see if does not change the block position when modal is closed/opened
+    // => if this removed, we should change cursor type
     return (
-        <div className="basis-1/6">{current_speech.user.name}</div>
+        <div className="basis-w-[100px]">
+            <div className="author w-[100px] h-[100px] bg-red-900">
+                <a onClick={modalClick} data-uuid={uuid}>{current_speaker.name}</a>
+            </div>
+        </div>
     );
 }
 
-export function TranscriptionRow({ uuid  }){
+export function TranscriptionRow({uuid, modalClick, replacementCandidateUUID, setReplacementCandidateUUID }) {
     const { transcription, setTranscription } = useContext(TranscriptContext);
     const current_speech = transcription[uuid];
 
     return (
         <div className="transcriptionRow flex flex-row">
-            <TranscriptionSpeaker uuid={uuid} />
+            <TranscriptionSpeaker uuid={uuid} modalClick={modalClick} replacementCandidateUUID={replacementCandidateUUID} setReplacementCandidateUUID={setReplacementCandidateUUID}  />
             <TranscriptionSpeech children_uuids={current_speech.children} />
         </div>
     );
@@ -256,15 +266,45 @@ export function TranscriptionSeparator(){
 }
 export function TranscriptionEdition({ uuid }) {
     const { transcription, setTranscription } = useContext(TranscriptContext);
+    const [showModal, setModal] = useState(false);
+    const [dataMore, setDataMore] = useState();
+    const [replacementCandidateUUID, setReplacementCandidateUUID] = useState("");
+    const close = (e) => {
+        if(e.keyCode === 27){
+            setReplacementCandidateUUID("");
+            window.removeEventListener('keydown', close);
+            setModal(false);
+        }
+    }
+    const modalClick = (e)=> {
+        if (showModal) {
+            console.log("show -> hide");
+            setReplacementCandidateUUID("");
+            window.removeEventListener('keydown', close);
+            setModal(false);
+         } else {
+            const selectedUUID = e.target.dataset.uuid;
+            console.log("hide -> show with " + selectedUUID);
+            setDataMore(selectedUUID);
+            window.addEventListener('keydown', close);
+            setModal(true);
+        }
 
+    }
     const listItems = transcription[uuid].children.flatMap(blockUUID => {
         const row = transcription[blockUUID];
-        const t = [<TranscriptionRow uuid={blockUUID} key={blockUUID}/>, <TranscriptionSeparator key={"sep_" + blockUUID} />];
+        const t = [
+            <TranscriptionRow uuid={blockUUID} key={blockUUID} modalClick={modalClick} replacementCandidateUUID={replacementCandidateUUID} setReplacementCandidateUUID={setReplacementCandidateUUID} />,
+            <TranscriptionSeparator key={"sep_" + blockUUID} />
+        ];
         return t;
     });
     return (
-        <div className="transcriptionEdition">
-            {listItems}
-        </div>
+        <>
+            <div className="transcriptionEdition">
+                {listItems}
+            </div>
+            <ModalSpeaker showModal={showModal} onClick={modalClick} handleClick={modalClick} blockUUID={dataMore} replacementCandidateUUID={replacementCandidateUUID} setReplacementCandidateUUID={setReplacementCandidateUUID}  />
+        </>
     );
 }

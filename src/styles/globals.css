@@ -40,7 +40,7 @@ body {
   background-color: blue;
 }
 .transcriptionRow {
-  padding: 10px;
+  /*padding: 10px;*/
   border: 10px solid green;
 }
 .transcriptionLine {
@@ -132,4 +132,20 @@ body {
 }
 .firstWord {
   margin-left:0px;
+}
+
+
+
+.author {
+    text-align: center;
+    position: relative;
+    overflow-wrap: anywhere;
+}
+.author a {
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    display: flex;
+    color: white;
+    cursor: pointer;
 }
