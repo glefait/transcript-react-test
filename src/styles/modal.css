@@ -45,3 +45,11 @@
 .current-speaker:hover {
   background-color: darkseagreen;
 }
+
+.add_speaker_button {
+  background-color: gray;
+}
+
+.add_speaker_button:hover {
+  background-color: darkgray;
+}

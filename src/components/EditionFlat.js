@@ -3,7 +3,6 @@ import React from "react";
 import { useState, useContext } from 'react';
 import { DomManualManagementContext } from '@/components/DomManualManagementContext';
 import { TranscriptContext } from '@/components/TranscriptContext';
-import {v4 as uuidv4} from 'uuid';
 import {TranscriptionLineDom} from "@/components/EditionFlatDom";
 import {findDifferences, moveLine, moveFirstWordAbove} from '@/components/DataStructure';
 import {ModalSpeaker} from "@/components/ModalSpeaker";

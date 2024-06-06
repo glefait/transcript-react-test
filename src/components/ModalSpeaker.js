@@ -1,10 +1,9 @@
 "use client";
 import '../styles/modal.css';
+import {v4 as uuidv4} from 'uuid';
 import {useContext, useEffect, useState} from "react";
 import {TranscriptContext} from "@/components/TranscriptContext";
 import {TranscriptSpeakerContext} from "@/components/TranscriptSpeakerContext";
-
-
 
 
 export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCandidateUUID, setReplacementCandidateUUID}) => {
@@ -64,6 +63,22 @@ export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCand
         setReplaceAll(false);
     }
 
+    function form_add_new_speaker(formData) {
+        const new_speaker = {
+            [uuidv4()]: {
+                    "name": formData.get("speaker_name"),
+                    "picture": "/media/user.png"
+                }
+        }
+        const newSpeakers = {
+                ...speakers,
+                ...new_speaker
+            }
+        setSpeakers(newSpeakers);
+        console.log(newSpeakers);
+        document.getElementById("add-new-speaker-from-modal").reset();
+    }
+
     let parts = [];
     for (const [key, value] of Object.entries(speakers)) {
         const specific_class = (current_uuid == key) ? "current-speaker" : "select-another-speaker";
@@ -81,8 +96,6 @@ export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCand
         parts.push(o);
     }
 
-    //     <input type="hidden" name="replace_uuid" value={replacementCandidateUUID}/>
-    // { ... (replacementCandidateUUID == "") ? { checked: false } : {} }
     return (
         <div className={showHideClassName}>
             <section className="modal-main rounded-lg">
@@ -152,11 +165,26 @@ export const ModalSpeaker = ({showModal, handleClick, blockUUID, replacementCand
                     </div>
                     <div className="flex basis-3/4 max-h-[80vh] overflow-y-auto pl-4 pr-4">
                         <ul role="list" className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+
+                            <li className="add_speaker_button rounded-lg bg-white shadow hover:bg-sky-700 p-2 max-h-32 items-center justify-center flex flex-col">
+                                <form className="text-center" action={form_add_new_speaker} id="add-new-speaker-from-modal">
+                                    <div className="grid gap-6 mb-6">
+                                            <input type="text" id="speaker_name" name="speaker_name"
+                                                   className="block w-full  p-2 bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                   placeholder="Speaker name" required/>
+                                    </div>
+                                    <button type="submit"
+                                            class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                        Ajouter
+                                    </button>
+                                </form>
+                            </li>
                             {parts}
                         </ul>
                     </div>
                 </div>
             </section>
         </div>
-    );
+);
+    // {parts}
 };
